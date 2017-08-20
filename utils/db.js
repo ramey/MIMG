@@ -14,7 +14,7 @@ exports.connect = ({host, user, password, database, connectionLimit}) => {
 
 const connection = () => {
     return new Promise((resolve, reject) => {
-        pool.getConnection((err, conn) => {
+        connPool.getConnection((err, conn) => {
             if (err) {
                 return reject(err);
             }
@@ -37,7 +37,7 @@ const runQuery = (conn, query) => {
 
 exports.query = queryString => {
     return new Promise((resolve, reject) => {
-        if (!pool) {
+        if (!connPool) {
             return reject(new Error('Missing Database Connection'));
         }
         connection()

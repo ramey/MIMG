@@ -1,7 +1,7 @@
 {
-    "host": "localhost",
+    "host": "127.0.0.1",
     "user": "root",
-    "passowrd": "ramey28121994",
-    "databse": "mimg",
+    "password": "ramey28121994",
+    "database": "mimg",
     "connectionLimit": 10
 }
