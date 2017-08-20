@@ -4,12 +4,15 @@ const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-
-const index = require('./app/routes/index');
-const users = require('./app/routes/users');
-const game = require('./app/routes/game');
-
+const db = require('./utils/db');
+const mysqlConf = require('./config/mysql.json');
+const index = require('./app/server/routes/index');
+const users = require('./app/server/routes/users');
+const game = require('./app/server/routes/game');
+const apiImg = require('./app/api/routes/image');
 const app = express();
+
+db.connect(mysqlConf);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'app', 'views'));
@@ -25,6 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 app.use('/game', game);
+app.use('/api/image', apiImg);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

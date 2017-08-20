@@ -1,0 +1,7 @@
+{
+    "host": "localhost",
+    "user": "root",
+    "passowrd": "ramey28121994",
+    "databse": "mimg",
+    "connectionLimit": 10
+}
