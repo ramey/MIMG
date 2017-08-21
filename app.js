@@ -4,14 +4,16 @@ const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const passport = require('passport');
 const db = require('./utils/db');
 const mysqlConf = require('./config/mysql.json');
 const index = require('./app/server/routes/index');
 const users = require('./app/server/routes/users');
 const game = require('./app/server/routes/game');
 const apiImg = require('./app/api/routes/image');
-const app = express();
+require('./utils/passport');
 
+const app = express();
 db.connect(mysqlConf);
 
 // view engine setup
@@ -24,7 +26,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(passport.initialize());
 app.use('/', index);
 app.use('/users', users);
 app.use('/game', game);
@@ -35,6 +37,13 @@ app.use((req, res, next) => {
   const err = new Error('Not Found');
   err.status = 404;
   next(err);
+});
+
+app.use((err, req, res, next) => {
+  if (err.name === 'UnauthorizedError') {
+    res.status(401);
+    res.json({"message": err.name + ":" + err.message});
+  }
 });
 
 // error handler

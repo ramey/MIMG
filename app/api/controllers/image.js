@@ -1,12 +1,9 @@
 const db = require('./../../../utils/db');
+const cache = require('./../../../utils/cache');
 
 const sendJsonResponse = (res, status, content) => {
     res.status(status);
     res.json(content);
-};
-
-const getImgs = (req, res) => {
-    sendJsonResponse(res, 200, {"status": 'success'});
 };
 
 const getImg = (req, res) => {
@@ -20,7 +17,7 @@ const getImg = (req, res) => {
             if (results.length == 0) {
                 sendJsonResponse(res, 404, {"status": 'failed', "message": 'No image found'})
             }
-            sendJsonResponse(res, 200, {"status": 'success'});
+            sendJsonResponse(res, 200, {"status": 'success', "image": results[0]});
         })
         .catch(err => {
             sendJsonResponse(res, 500, {"status": 'faled', "message": 'Error while contacting database.', "error": err});
@@ -48,6 +45,9 @@ const createImg = (req, res) => {
     }
     db.query(query)
         .then(() => {
+            if (imgType == 'primary') {
+                cache.increment('primary_images');
+            }
             sendJsonResponse(res, 201, {"status": 'success'});
         })
         .catch(err => {
@@ -89,6 +89,9 @@ const deleteImg = (req, res) => {
     const query = `delete from ${imgType} where id = ${req.params.imgid};`;
     db.query(query)
         .then(() => {
+            if (imgType == 'primary') {
+                cache.decrement('primary_images');
+            }
             sendJsonResponse(res, 204, {"status": 'success'});
         })
         .catch(err => {

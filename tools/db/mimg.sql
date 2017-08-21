@@ -44,3 +44,23 @@ INSERT INTO `secondary_images` (`primary_image`, `image_src`) VALUES(1, '/images
     (6, '/images/secondary/giraffe1.jpg'),
     (6, '/images/secondary/giraffe2.jpg'),
     (6, '/images/secondary/giraffe3.jpg');
+
+DROP TABLE if EXISTS `scores`;
+DROP TABLE if EXISTS `users`;
+
+CREATE TABLE `users` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `username` varchar(16) NOT NULL,
+    `hash` varchar(16) NOT NULL,
+    `salt` varchar(64) NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY (`username`)
+);
+
+CREATE TABLE `scores` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `user` varchar(11) NOT NULL,
+    `score` int(11) DEFAULT 0,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`user`) REFERENCES `users` (`id`)
+);
