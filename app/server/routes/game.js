@@ -1,8 +1,14 @@
+/**
+ * @file - routes for main game
+ */
 const express = require('express');
 const router = express.Router();
 const jwt = require('express-jwt');
 const ctrlGame = require('../controllers/game');
 
+/**
+ * middleware for authorization
+ */
 const auth = jwt({
     secret: 'mimgsecret',
     userProperty: 'payload'

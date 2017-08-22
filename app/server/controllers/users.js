@@ -1,14 +1,29 @@
+/**
+ * @file - controllers for user routes
+ */
 const passport = require('passport');
 const auth = require('./../../../utils/auth');
 const db = require('./../../../utils/db');
+
+// url for scores API
 const apiURL = require('./../../../config/api.json').apiURL;
 const request = require('request');
 
+/**
+ * @function - common function for requests
+ * @param {obj} res 
+ * @param {number} status - response code for request 
+ * @param {obj} content - to be sent with response
+ */
 const sendJsonResponse = (res, status, content) => {
     res.status(status);
     res.json(content);
 };
 
+/**
+ * @function - updateScore is used to update score
+ * @param {string} username whose score is updated
+ */
 const updateScore = username => {
     return new Promise((resolve, reject) => {
         const reqOptions = {
@@ -32,6 +47,11 @@ const updateScore = username => {
     });
 }
 
+/**
+ * @function - handler for registration route
+ * @param {obj} req 
+ * @param {obj} res 
+ */
 const register = (req, res) => {
     if (!req.body.username) {
         sendJsonResponse(res, 400, {"message":'Username required'});
@@ -51,6 +71,11 @@ const register = (req, res) => {
         })
 }
 
+/**
+ * @function - handler for login route
+ * @param {obj} req 
+ * @param {obj} res 
+ */
 const login = (req, res) => {
     if (!req.body.username || !req.body.password) {
         sendJsonResponse(res, 400, {"message": 'All fields are required'});

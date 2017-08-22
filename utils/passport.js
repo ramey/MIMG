@@ -1,3 +1,6 @@
+/**
+ * @file - utility for passport local auth
+ */
 const passport = require('passport');
 const LocalStratergy = require('passport-local').Strategy;
 const db = require('./db');

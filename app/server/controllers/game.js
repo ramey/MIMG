@@ -1,14 +1,29 @@
+/**
+ * @file Controllers for game route
+ */
 const request = require('request');
 const apiURL = require('./../../../config/api.json').apiURL;
 const numQuestions = require('./../../../config/game.json').numQuestions;
 const cache = require('./../../../utils/cache');
 const db = require('./../../../utils/db');
 
+
+/**
+ * @function - common function for requests
+ * @param {obj} res 
+ * @param {number} status - response code for request 
+ * @param {obj} content - to be sent with response
+ */
 const sendJsonResponse = (res, status, content) => {
     res.status(status);
     res.json(content);
 };
 
+/**
+ * @function - get the image data from DB
+ * @param {string} arg - the image id
+ * @param {string} type - whether it's a primary or secondary image
+ */
 function getImageData(arg, type) {
     let requrl = `${apiURL}/api/image/${arg}/`;
     
@@ -46,6 +61,11 @@ function getImageData(arg, type) {
     });
 };
 
+/**
+ * @function - handler for GET game API
+ * @param {obj} req 
+ * @param {obj} res 
+ */
 const images = (req, res) => {
     let currentUser, playedUser, totalImages, respData;
     const requiredNum = numQuestions;
@@ -100,6 +120,10 @@ const images = (req, res) => {
 
 }
 
+/**
+ * @function - get user details from request
+ * @param {obj} req 
+ */
 const getUser = (req) => {
     return new Promise((resolve, reject) => {
         if (req.payload && req.payload.username) {
@@ -117,6 +141,10 @@ const getUser = (req) => {
     });
 };
 
+/**
+ * @function - utility function to expand object to an array with key followed by value
+ * @param {object} obj 
+ */
 const expandObj = obj => {
     let expandedObj = Object.keys(obj).reduce((values, key) => {
         values.push(key);
@@ -126,6 +154,11 @@ const expandObj = obj => {
     return expandedObj;
 }
 
+/**
+ * @function - compare the solutions of player1 and player2 result
+ * @param {obj} player1 
+ * @param {obj} player2 
+ */
 const compare = (player1, player2) => {
     let score = Object.keys(player1).reduce((score, ques) =>{
         if (player1[ques] === player2[ques]) {
@@ -136,6 +169,10 @@ const compare = (player1, player2) => {
     return score;
 };
 
+/**
+ * @function - get score for a user by calling score API
+ * @param {string} user - username for the score wanted
+ */
 const getScore = user => {
     return new Promise((resolve, reject) => {
         reqOptions = {
@@ -157,6 +194,11 @@ const getScore = user => {
     });
 };
 
+/**
+ * @function - to update score using scores API
+ * @param {string} user - user whose score is updated
+ * @param {string} score - the score that needs to be added
+ */
 const updateScore = (user, score) => {
     return new Promise((resolve, reject) => {
         getScore(user)
@@ -185,6 +227,11 @@ const updateScore = (user, score) => {
     });
 }
 
+/**
+ * @function - handler for game POST /image API 
+ * @param {obj} req 
+ * @param {obj} res 
+ */
 const submit = (req, res) => {
     if (Object.keys(req.body).length !==  numQuestions) {
         sendJsonResponse(res, 400, {"message": 'All questions not completed'});

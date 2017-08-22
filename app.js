@@ -1,3 +1,10 @@
+/**
+ * @file - main file
+ */
+
+/**
+ * Loading dependencies
+ */
 const express = require('express');
 const path = require('path');
 const favicon = require('serve-favicon');
@@ -6,6 +13,8 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const db = require('./utils/db');
+
+// loading mysql config
 const mysqlConf = require('./config/mysql.json');
 const index = require('./app/server/routes/index');
 const users = require('./app/server/routes/users');
@@ -21,6 +30,9 @@ db.connect(mysqlConf);
 app.set('views', path.join(__dirname, 'app', 'server', 'views'));
 app.set('view engine', 'ejs');
 
+/**
+ * Middle-wares
+ */
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -50,7 +62,6 @@ app.use((err, req, res, next) => {
 
 // error handler
 app.use((err, req, res, next) => {
-  // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 

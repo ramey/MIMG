@@ -5,6 +5,11 @@ const sendJsonResponse = (res, status, content) => {
     res.json(content);
 };
 
+/**
+ * @func - handler for GET scores API
+ * @param {obj} req 
+ * @param {obj} res 
+ */
 const getScore = (req, res) => {
     const query = `select * from scores where user = '${req.params.username}';`
     db.query(query)
@@ -19,6 +24,11 @@ const getScore = (req, res) => {
         });
 };
 
+/**
+ * @func - handler for POST scores API
+ * @param {obj} req 
+ * @param {obj} res 
+ */
 const createScore = (req, res) => {
     query = `insert into scores (\`user\`) values('${req.body.user}');`;
     db.query(query)
@@ -30,6 +40,11 @@ const createScore = (req, res) => {
         });
 };
 
+/**
+ * @func - handler for PUT scores API
+ * @param {obj} req 
+ * @param {obj} res 
+ */
 const updateScore = (req, res) => {
     if (Object.keys(req.body) == 0) {
         sendJsonResponse(res, 400, {"status": 'failed', "message": 'No data to update'});
@@ -44,6 +59,11 @@ const updateScore = (req, res) => {
         });
 };
 
+/**
+ * @func - handler for DELETE scores API
+ * @param {obj} req 
+ * @param {obj} res 
+ */
 const deleteScore = (req, res) => {
     const query = `delete from scores where user = ${req.params.userid};`;
     db.query(query)

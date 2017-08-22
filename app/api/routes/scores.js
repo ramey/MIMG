@@ -1,3 +1,6 @@
+/**
+ * @file - routes for scores API
+ */
 const express = require('express');
 const router = express.Router();
 const ctrlScore = require('../controllers/scores');

@@ -1,3 +1,6 @@
+/**
+ * @file - utility file for cache - currently redis
+ */
 const redis = require('redis');
 const redisUrl = require('./../config/redis.json').redisUrl;
 const client = redis.createClient(redisUrl);

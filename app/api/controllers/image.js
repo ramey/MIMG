@@ -6,6 +6,11 @@ const sendJsonResponse = (res, status, content) => {
     res.json(content);
 };
 
+/**
+ * @func - handler for GET image API
+ * @param {obj} req 
+ * @param {obj} res 
+ */
 const getImg = (req, res) => {
     const imgType = req.query['imgType'];
     if (imgType == undefined) {
@@ -24,6 +29,11 @@ const getImg = (req, res) => {
         });
 };
 
+/**
+ * @func - handler for POST image API
+ * @param {obj} req 
+ * @param {obj} res 
+ */
 const createImg = (req, res) => {
     const imgType = req.query['imgType'];
     let query;
@@ -55,6 +65,11 @@ const createImg = (req, res) => {
         });
 };
 
+/**
+ * @func - handler for GET secondary image from primary image API
+ * @param {obj} req 
+ * @param {obj} res 
+ */
 const getSecondaryImgs = (req, res) => {
     const query = `select * from secondary_images where primary_image = '${req.params.priImage}';`;
     db.query(query)
@@ -69,6 +84,11 @@ const getSecondaryImgs = (req, res) => {
         });
 }
 
+/**
+ * @func - handler for PUT image API
+ * @param {obj} req 
+ * @param {obj} res 
+ */
 const updateImg = (req, res) => {
     if (Object.keys(req.body) == 0) {
         sendJsonResponse(res, 400, {"status": 'failed', "message": 'No data to update'});
@@ -98,6 +118,11 @@ const updateImg = (req, res) => {
         });
 };
 
+/**
+ * @func - handler for DELETE image API
+ * @param {obj} req 
+ * @param {obj} res 
+ */
 const deleteImg = (req, res) => {
     const imgType = req.query['imgType'];
     const query = `delete from ${imgType} where id = ${req.params.imgid};`;

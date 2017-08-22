@@ -1,3 +1,6 @@
+/**
+ * @file - utility file for db, currently mysql
+ */
 const mysql = require('mysql');
 
 let connPool = null;
@@ -12,6 +15,10 @@ exports.connect = ({host, user, password, database, connectionLimit}) => {
     });
 }
 
+/**
+ * @function - gets a connection from pool
+ * @return {obj} Promise
+ */
 const connection = () => {
     return new Promise((resolve, reject) => {
         connPool.getConnection((err, conn) => {
@@ -23,6 +30,11 @@ const connection = () => {
     });
 }
 
+/**
+ * @function - to run the query
+ * @param {obj} connection object
+ * @param {obj} query - query to be run 
+ */
 const runQuery = (conn, query) => {
     return new Promise((resolve, reject) => {
         conn.query(query, (err, results, fields) => {
@@ -35,6 +47,10 @@ const runQuery = (conn, query) => {
     });
 };
 
+/**
+ * @function - execute a db query, first get a connection and then run
+ * @param {string} queryString - query to be run
+ */
 exports.query = queryString => {
     return new Promise((resolve, reject) => {
         if (!connPool) {
