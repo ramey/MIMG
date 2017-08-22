@@ -1,0 +1,10 @@
+Assumptions made while building the app -
+1) When a user plays the game twice. Only the latest answers are considered.
+2) Currently only two players can answer for a set of images.
+
+
+Imporovement -
+1) Adding unit tests using Mocha/chai.
+2) Adding support for other media other than image.
+3) Use websockets to do realtime matching and scoring.
+4) Multiple players can play a set of images.
