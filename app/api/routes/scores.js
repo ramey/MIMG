@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const ctrlScore = require('../controllers/score');
+const ctrlScore = require('../controllers/scores');
 
 router.post('/', ctrlScore.createScore);
-router.get('/:userid', ctrlScore.getScore);
-router.put('/:userid', ctrlScore.updateScore);
-router.delete('/:userid', ctrlScore.deleteScore);
+router.get('/:username', ctrlScore.getScore);
+router.put('/:username', ctrlScore.updateScore);
+router.delete('/:username', ctrlScore.deleteScore);
 
 module.exports = router;

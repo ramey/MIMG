@@ -12,15 +12,15 @@ const generateJwt = (username) => {
 
 const setPassword = (password) => {
     const salt = crypto.randomBytes(16).toString('hex');
-    const hash = crypto.pbkdf2Sync(password, salt, 1000, 64).toString('hex');
+    const hash = crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex');
     return {
-        salt,
-        hash
+        'salt': salt,
+        'hash': hash
     };
 };
 
 const validPassword = (password, storedHash, salt) => {
-    const hash = crypto.pbkdf2Sync(password, salt, 1000, 64).toString('hex');
+    const hash = crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex');
     return hash === storedHash;
 };
 

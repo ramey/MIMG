@@ -1,6 +1,6 @@
 const redis = require('redis');
-const redisConf = require('./../config/redis.json');
-const client = redis.createClient(redisConf);
+const redisUrl = require('./../config/redis.json').redisUrl;
+const client = redis.createClient(redisUrl);
 
 const getValue = key => {
     return new Promise((resolve, reject) => {
@@ -37,7 +37,7 @@ const decrement = key => {
 
 const addToList = (key, item) => {
     return new Promise((resolve, reject) => {
-        client.rpush(key, item, (err, reply) => {
+        client.sadd(key, item, (err, reply) => {
             if(err) {
                 return reject(err);
             }
@@ -48,7 +48,7 @@ const addToList = (key, item) => {
 
 const getUser = key => {
     return new Promise((resolve, reject) => {
-        client.lpop(key, (err, reply) => {
+        client.spop(key, (err, reply) => {
             if(err) {
                 return reject(err);
             }
@@ -57,9 +57,9 @@ const getUser = key => {
     });
 };
 
-const addToHash = (...args) => {
+const addToHash = (key, args) => {
     return new Promise((resolve, reject) => {
-        client.hset(...args, (err, reply) => {
+        client.hmset(key, args, (err, reply) => {
             if (err) {
                 return reject(err);
             }
@@ -68,9 +68,9 @@ const addToHash = (...args) => {
     });
 };
 
-const getHashValues = key => {
+const getHashKeys = key => {
     return new Promise((resolve, reject) => {
-        client.hvals(key, (err, reply) => {
+        client.hkeys(key, (err, reply) => {
             if (err) {
                 return reject(err);
             }
@@ -78,6 +78,28 @@ const getHashValues = key => {
         });
     });
 };
+
+const deleteFromHash = (key, hashKey) => {
+    return new Promise((resolve, reject) => {
+        client.hdel(key, hashKey, (err, reply) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(reply);
+        })
+    })
+}
+
+const getHash = key => {
+    return new Promise((resolve, reject) => {
+        client.hgetall(key, (err, reply) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(reply);
+        });
+    });
+}
 
 const getHashValue = (key, hashKey) => {
     return new Promise((resolve, reject) => {
@@ -96,7 +118,9 @@ module.exports = {
     getUser,
     addToHash,
     addToList,
-    getHashValues,
+    getHash,
     getValue,
-    getHashValue
+    getHashValue,
+    deleteFromHash,
+    getHashKeys
 };

@@ -11,13 +11,14 @@ const index = require('./app/server/routes/index');
 const users = require('./app/server/routes/users');
 const game = require('./app/server/routes/game');
 const apiImg = require('./app/api/routes/image');
+const apiScore = require('./app/api/routes/scores');
 require('./utils/passport');
 
 const app = express();
 db.connect(mysqlConf);
 
 // view engine setup
-app.set('views', path.join(__dirname, 'app', 'views'));
+app.set('views', path.join(__dirname, 'app', 'server', 'views'));
 app.set('view engine', 'ejs');
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -31,6 +32,7 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/game', game);
 app.use('/api/image', apiImg);
+app.use('/api/scores', apiScore);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

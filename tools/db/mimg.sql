@@ -51,16 +51,15 @@ DROP TABLE if EXISTS `users`;
 CREATE TABLE `users` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `username` varchar(16) NOT NULL,
-    `hash` varchar(16) NOT NULL,
-    `salt` varchar(64) NOT NULL,
+    `hash` text NOT NULL,
+    `salt` text NOT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY (`username`)
 );
 
 CREATE TABLE `scores` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
-    `user` varchar(11) NOT NULL,
+    `user` varchar(16) NOT NULL,
     `score` int(11) DEFAULT 0,
-    PRIMARY KEY (`id`),
-    FOREIGN KEY (`user`) REFERENCES `users` (`id`)
+    PRIMARY KEY (`id`)
 );

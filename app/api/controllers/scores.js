@@ -12,7 +12,7 @@ const getScore = (req, res) => {
             if (results.length == 0) {
                 sendJsonResponse(res, 404, {"status": 'failed', "message": 'No score found'})
             }
-            sendJsonResponse(res, 200, {"status": 'success', "score": results[0]});
+            sendJsonResponse(res, 200, {"status": 'success', "score": results[0].score});
         })
         .catch(err => {
             sendJsonResponse(res, 500, {"status": 'faled', "message": 'Error while contacting database.', "error": err});
@@ -20,7 +20,7 @@ const getScore = (req, res) => {
 };
 
 const createScore = (req, res) => {
-    query = `insert into scores (\`user\`) values('${req.body.username}');`;
+    query = `insert into scores (\`user\`) values('${req.body.user}');`;
     db.query(query)
         .then(() => {
             sendJsonResponse(res, 201, {"status": 'success'});
@@ -34,7 +34,7 @@ const updateScore = (req, res) => {
     if (Object.keys(req.body) == 0) {
         sendJsonResponse(res, 400, {"status": 'failed', "message": 'No data to update'});
     }
-    query = `update scores set score = ${req.body.score} where user = '${req.params.userid}';`;
+    query = `update scores set score = ${req.body.score} where user = '${req.params.username}';`;
     db.query(query)
         .then(() => {
             sendJsonResponse(res, 200, {"status": 'success'});
@@ -44,7 +44,7 @@ const updateScore = (req, res) => {
         });
 };
 
-const deleteImg = (req, res) => {
+const deleteScore = (req, res) => {
     const query = `delete from scores where user = ${req.params.userid};`;
     db.query(query)
         .then(() => {
@@ -54,3 +54,10 @@ const deleteImg = (req, res) => {
             sendJsonResponse(res, 500, {"status": 'faled', "message": 'Error while contacting database.', "error": err});
         });
 };
+
+module.exports = {
+    createScore,
+    getScore,
+    updateScore,
+    deleteScore
+}

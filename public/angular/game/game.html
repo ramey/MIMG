@@ -1,0 +1,36 @@
+<nav class="light-blue darken-4" role="navigation">
+    <ul class = "right">
+        <li ng-show="vm.isLoggedIn"><a href="" ng-click="vm.logout()">Logout</a></li>
+    </ul>
+</nav>
+<div class="section">
+    <table style="margin-left: 50px;">
+        <p class=" white-text red accent-4" ng-show="vm.formError">{{vm.formError}}</p>
+        <thead>
+            <tr>
+                <th>Primary Image</th>
+                <th>Secondary Image</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="images in vm.data">
+                <td >
+                    <img src="{{images.primary.image_src}}" class="imgs"/>
+                </td>
+                <td>
+                    <div class="row">
+                        <div class="col s3" ng-repeat="image in images.secondary">
+                            <input name="group{{images.primary.id}}" type="radio" id="{{image.id}}" ng-model="vm.pushData[image.primary_image]" value="{{image.id}}"/>
+                            <label for="{{image.id}}"><img src="{{image.image_src}}" class = "imgs"/></label>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class= "row">
+        <div class="col offset-s6">
+            <button class="btn waves-effect waves-light red" href="#score" ng-click="vm.submit()">Submit</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+<nav class="light-blue darken-4" role="navigation">
+    <ul class = "right">
+        <li ng-show="vm.isLoggedIn"><a href="" ng-click="vm.logout()">Logout</a></li>
+    </ul>
+</nav>
+<div class="section">
+    <div class="row">
+        <div class="col offset-m4">
+            <h1>Score: {{vm.score}}<h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col offset-m4">
+            <button class="btn waves-effect waves-light red" href="#game" ng-click="vm.playagain()">Play Again</button>
+        </div>
+    </div>
+</div>

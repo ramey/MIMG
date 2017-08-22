@@ -9,7 +9,6 @@ const auth = jwt({
 });
 
 
-router.get('/', auth, ctrlGame.game);
 router.get('/images', auth, ctrlGame.images);
 
 router.post('/images', auth, ctrlGame.submit);

@@ -55,6 +55,20 @@ const createImg = (req, res) => {
         });
 };
 
+const getSecondaryImgs = (req, res) => {
+    const query = `select * from secondary_images where primary_image = '${req.params.priImage}';`;
+    db.query(query)
+        .then((results, _) => {
+            if (results.length == 0) {
+                sendJsonResponse(res, 404, {"status": 'failed', "message": 'No image found'})
+            }
+            sendJsonResponse(res, 200, {"status": 'success', "images": results});
+        })
+        .catch(err => {
+            sendJsonResponse(res, 500, {"status": 'faled', "message": 'Error while contacting database.', "error": err});
+        });
+}
+
 const updateImg = (req, res) => {
     if (Object.keys(req.body) == 0) {
         sendJsonResponse(res, 400, {"status": 'failed', "message": 'No data to update'});
@@ -100,9 +114,9 @@ const deleteImg = (req, res) => {
 };
 
 module.exports = {
-    getImgs,
     getImg,
     createImg,
     updateImg,
-    deleteImg
+    deleteImg,
+    getSecondaryImgs
 };
